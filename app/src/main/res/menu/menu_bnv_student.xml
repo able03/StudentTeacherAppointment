@@ -15,12 +15,6 @@
         app:showAsAction="withText" />
 
     <item
-        android:id="@+id/menuSetAppointmentStudent"
-        android:icon="@drawable/ic_register"
-        android:title="Set appointment"
-        app:showAsAction="withText" />
-
-    <item
         android:id="@+id/menuLogoutStudent"
         android:icon="@drawable/ic_logout"
         android:title="Logout"

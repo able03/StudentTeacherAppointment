@@ -100,6 +100,7 @@ public class LoginActivity extends AppCompatActivity
         {
             Toast.makeText(this, "Account not found", Toast.LENGTH_SHORT).show();
         }
+        cursor.close();
     }
 
 

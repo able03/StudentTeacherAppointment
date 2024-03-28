@@ -16,7 +16,6 @@ import com.example.studentteacherappointment.R;
 public class TeacherMyAppointmentsFragment extends Fragment
 {
 
-    private TextView tv_id_teacher;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -31,12 +30,10 @@ public class TeacherMyAppointmentsFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         initValues();
 
-        String id = getActivity().getIntent().getStringExtra("_id");
-        tv_id_teacher.setText(id);
     }
 
     private void initValues()
     {
-        tv_id_teacher = getView().findViewById(R.id.tvMyAppointmentTeacher);
+
     }
 }

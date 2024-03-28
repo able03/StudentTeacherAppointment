@@ -13,6 +13,9 @@
         android:theme="@style/Theme.StudentTeacherAppointment"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SetAppointmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.StudentMainActivity"
             android:exported="false" />
         <activity

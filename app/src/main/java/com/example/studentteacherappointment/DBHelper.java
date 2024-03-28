@@ -22,7 +22,6 @@ public class DBHelper extends SQLiteOpenHelper
             COLUMN_USERNAME_STUDENT = "username",
             COLUMN_PASSWORD_STUDENT = "password";
 
-
     private static final String TABLE_NAME_TEACHER = "teacherTbl",
             COLUMN_ID_TEACHER = "studentId",
             COLUMN_FIRST_NAME_TEACHER = "firstName",
@@ -31,6 +30,10 @@ public class DBHelper extends SQLiteOpenHelper
             COLUMN_GENDER_TEACHER = "gender",
             COLUMN_USERNAME_TEACHER = "username",
             COLUMN_PASSWORD_TEACHER = "password";
+
+    private static final String TABLE_APPOINTMENT_TEACHER = "teacherAppointmentTbl",
+                                COLUMN_ID = "_id",
+                                COLUMN_SUBJECT = "subject";
 
     private static final String student = "Student", teacher = "Teacher";
 
@@ -143,15 +146,29 @@ public class DBHelper extends SQLiteOpenHelper
         Cursor cursor = null;
         if(role.equals(student))
         {
-            cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME_STUDENT + " WHERE username = '"+username+"' AND password = '"+password+"'", null);
+            cursor = db.rawQuery("SELECT * FROM " +TABLE_NAME_STUDENT+ " WHERE username = '"+username+"' AND password = '"+password+"'", null);
         }
         else if(role.equals(teacher))
         {
-            cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME_TEACHER + " WHERE username = '"+username+"' AND password = '"+password+"'", null);
+            cursor = db.rawQuery("SELECT * FROM " +TABLE_NAME_TEACHER+ " WHERE username = '"+username+"' AND password = '"+password+"'", null);
         }
         return cursor;
     }
 
+    public Cursor readData(String role, String id)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(role.equals(student))
+        {
+            cursor = db.rawQuery("SELECT * FROM " +TABLE_NAME_STUDENT+ " WHERE "+COLUMN_ID_STUDENT+" = '"+id+"'", null);
+        }
+        else if(role.equals(teacher))
+        {
+            cursor = db.rawQuery("SELECT * FROM " +TABLE_NAME_TEACHER+ " WHERE "+COLUMN_ID_TEACHER+" = '"+id+"'", null);
+        }
 
+        return cursor;
+    }
 
 }

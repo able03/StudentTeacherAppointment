@@ -10,7 +10,6 @@ import android.widget.FrameLayout;
 
 import com.example.studentteacherappointment.R;
 import com.example.studentteacherappointment.fragments.StudentMyAppointmentFragment;
-import com.example.studentteacherappointment.fragments.StudentSetAppointmentFragment;
 import com.example.studentteacherappointment.fragments.StudentTeacherListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -54,10 +53,6 @@ public class StudentMainActivity extends AppCompatActivity
             else if(id == R.id.menuTeacherList)
             {
                 replaceFragment(new StudentTeacherListFragment());
-            }
-            else if(id == R.id.menuSetAppointmentStudent)
-            {
-                replaceFragment(new StudentSetAppointmentFragment());
             }
             else if(id == R.id.menuLogoutStudent)
             {

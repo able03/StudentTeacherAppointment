@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/menuStudentsTeacher"
-        android:icon="@drawable/ic_student"
+        android:icon="@drawable/ic_people"
         android:title="Students"
         app:showAsAction="withText" />
 
