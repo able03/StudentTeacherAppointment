@@ -83,14 +83,17 @@ public class LoginActivity extends AppCompatActivity
         cursor.moveToFirst();
         if(cursor.getCount() > 0)
         {
-
             String id = cursor.getString(0);
             if(role.equals(student)){
-                Toast.makeText(this, "Student: " + id, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, StudentMainActivity.class);
+                intent.putExtra("_id", id);
+                startActivity(intent);
             }
             else if(role.equals(teacher))
             {
-                Toast.makeText(this, "Teacher: " + id, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, TeacherMainActivity.class);
+                intent.putExtra("_id", id);
+                startActivity(intent);
             }
         }
         else

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menuMyAppointmentStudent"
+        android:icon="@drawable/ic_my_appointment"
+        android:title="Appointments"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/menuTeacherList"
+        android:icon="@drawable/ic_person_search"
+        android:title="Teachers"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/menuSetAppointmentStudent"
+        android:icon="@drawable/ic_register"
+        android:title="Set appointment"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/menuLogoutStudent"
+        android:icon="@drawable/ic_logout"
+        android:title="Logout"
+        app:showAsAction="withText" />
+
+</menu>
