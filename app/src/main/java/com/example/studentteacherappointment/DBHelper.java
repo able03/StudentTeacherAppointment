@@ -123,7 +123,7 @@ public class DBHelper extends SQLiteOpenHelper
             cursor.moveToFirst();
             long count = cursor.getInt(0);
             cursor.close();
-            id = "STI01" + count;
+            id = "STI01" + (count+1);
         }
         else if(role.equals(teacher))
         {
@@ -131,7 +131,7 @@ public class DBHelper extends SQLiteOpenHelper
             cursor.moveToFirst();
             long count = cursor.getInt(0);
             cursor.close();
-            id = "ROS01" + count;
+            id = "ROS01" + (count+1);
         }
         return id;
     }
