@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity
     private MaterialButton btn_login;
     private TextView tv_register_here;
     private DBHelper dbHelper;
+    private static final String student = "Student", teacher = "Teacher";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,12 +85,12 @@ public class LoginActivity extends AppCompatActivity
         {
 
             String id = cursor.getString(0);
-            if(role.equals("Student")){
+            if(role.equals(student)){
                 Toast.makeText(this, "Student: " + id, Toast.LENGTH_SHORT).show();
             }
-            else if(role.equals("Teacher"))
+            else if(role.equals(teacher))
             {
-                Toast.makeText(this, "Student: " + id, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Teacher: " + id, Toast.LENGTH_SHORT).show();
             }
         }
         else
