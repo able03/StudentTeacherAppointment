@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.example.studentteacherappointment.R;
-import com.example.studentteacherappointment.fragments.TeacherMyAppointmentsFragment;
-import com.example.studentteacherappointment.fragments.TeacherSetMyAppointmentFragment;
+import com.example.studentteacherappointment.fragments.TeacherSubjectsFragment;
+import com.example.studentteacherappointment.fragments.TeacherNewSubjectFragment;
 import com.example.studentteacherappointment.fragments.TeacherStudentListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -26,7 +26,7 @@ public class TeacherMainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_main);
         initValues();
-        replaceFragment(new TeacherMyAppointmentsFragment());
+        replaceFragment(new TeacherSubjectsFragment());
         setMenuListener();
     }
 
@@ -42,15 +42,15 @@ public class TeacherMainActivity extends AppCompatActivity
             int id = menuItem.getItemId();
             if(id == R.id.menuMyAppointmentTeacher)
             {
-                replaceFragment(new TeacherMyAppointmentsFragment());
+                replaceFragment(new TeacherSubjectsFragment());
             }
             else if(id == R.id.menuStudentsTeacher)
             {
                 replaceFragment(new TeacherStudentListFragment());
             }
-            else if(id == R.id.menuSetAppointmentTeacher)
+            else if(id == R.id.menuNewSubjectTeacher)
             {
-                replaceFragment(new TeacherSetMyAppointmentFragment());
+                replaceFragment(new TeacherNewSubjectFragment());
             }
             else if(id == R.id.menuLogoutTeacher)
             {

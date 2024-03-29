@@ -15,9 +15,9 @@
         app:showAsAction="withText" />
 
     <item
-        android:id="@+id/menuSetAppointmentTeacher"
+        android:id="@+id/menuNewSubjectTeacher"
         android:icon="@drawable/ic_register"
-        android:title="Set appointment"
+        android:title="New Subejct"
         app:showAsAction="withText" />
 
     <item

@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity
         initValues();
         setSpinner();
         setListeners();
+
     }
 
     private void initValues()

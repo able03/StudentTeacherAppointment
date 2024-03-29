@@ -23,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper
             COLUMN_PASSWORD_STUDENT = "password";
 
     private static final String TABLE_NAME_TEACHER = "teacherTbl",
-            COLUMN_ID_TEACHER = "studentId",
+            COLUMN_ID_TEACHER = "teacherId",
             COLUMN_FIRST_NAME_TEACHER = "firstName",
             COLUMN_MIDDLE_NAME_TEACHER = "middleName",
             COLUMN_LAST_NAME_TEACHER = "lastName",
@@ -31,9 +31,10 @@ public class DBHelper extends SQLiteOpenHelper
             COLUMN_USERNAME_TEACHER = "username",
             COLUMN_PASSWORD_TEACHER = "password";
 
-    private static final String TABLE_APPOINTMENT_TEACHER = "teacherAppointmentTbl",
-                                COLUMN_ID = "_id",
-                                COLUMN_SUBJECT = "subject";
+    private static final String TABLE_NAME_SUBJECT_TEACHER = "teacherSubjectsTbl",
+                                COLUMN_ID_AP = "_id",
+                                COLUMN_SUBJECT_AP = "subject",
+                                COLUMN_ID_TEACHER_AP = "teacherId";
 
     private static final String student = "Student", teacher = "Teacher";
 
@@ -64,6 +65,15 @@ public class DBHelper extends SQLiteOpenHelper
                 COLUMN_USERNAME_TEACHER + " VARCHAR(50), " +
                 COLUMN_PASSWORD_TEACHER + " VARCHAR(50))";
         db.execSQL(teacherQuery);
+
+        String teachSubjQuery = "CREATE TABLE "+TABLE_NAME_SUBJECT_TEACHER+" ("
+                                +COLUMN_ID_AP + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                +COLUMN_SUBJECT_AP + " VARCHAR(50), "
+                                + COLUMN_ID_TEACHER_AP + " VARCHAR(50) ,FOREIGN KEY ("
+                                +COLUMN_ID_TEACHER_AP+") REFERENCES "
+                                +TABLE_NAME_TEACHER+" ("
+                                +COLUMN_ID_TEACHER+"))";
+        db.execSQL(teachSubjQuery);
     }
 
     @Override
@@ -71,6 +81,7 @@ public class DBHelper extends SQLiteOpenHelper
     {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_STUDENT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_TEACHER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_SUBJECT_TEACHER);
         onCreate(db);
     }
 
@@ -139,7 +150,6 @@ public class DBHelper extends SQLiteOpenHelper
         return id;
     }
 
-
     public Cursor checkLogin(String role, String username, String password)
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -170,5 +180,37 @@ public class DBHelper extends SQLiteOpenHelper
 
         return cursor;
     }
+
+    public Cursor readAllTeacherData()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM "+TABLE_NAME_TEACHER, null);
+    }
+
+    public boolean addSubjectData(String subject, String teacherId)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SUBJECT_AP, subject);
+        values.put(COLUMN_ID_TEACHER_AP, teacherId);
+
+        long i = db.insert(TABLE_NAME_SUBJECT_TEACHER, null, values);
+        if(i != -1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public Cursor readSubjectData(String teacherId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM '"+TABLE_NAME_SUBJECT_TEACHER+"' WHERE '"+COLUMN_ID_TEACHER_AP+"' = '"+teacherId+"'", null);
+    }
+
+
 
 }

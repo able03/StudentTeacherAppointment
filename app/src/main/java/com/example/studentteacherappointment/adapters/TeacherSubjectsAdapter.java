@@ -3,7 +3,6 @@ package com.example.studentteacherappointment.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +18,26 @@ import com.example.studentteacherappointment.R;
 import com.example.studentteacherappointment.activities.SetAppointmentActivity;
 import com.example.studentteacherappointment.models.TeacherAdapterModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TeacherAppointmentAdapter extends RecyclerView.Adapter<TeacherAppointmentAdapter.MyViewHolder>
+public class TeacherSubjectsAdapter extends RecyclerView.Adapter<TeacherSubjectsAdapter.MyViewHolder>
 {
     private Context context;
-    private List<TeacherAdapterModel> teachers;
+    private ArrayList<TeacherAdapterModel> teachers;
     private DBHelper dbHelper;
 
-    public TeacherAppointmentAdapter(Context context, List<TeacherAdapterModel> teachers)
+    public TeacherSubjectsAdapter(Context context)
     {
         this.context = context;
+    }
+
+    public void setTeachers(ArrayList<TeacherAdapterModel> teachers)
+    {
         this.teachers = teachers;
     }
 
-    public void setFilteredTeachers(List<TeacherAdapterModel> teachers)
+    public void setFilteredTeachers(ArrayList<TeacherAdapterModel> teachers)
     {
         this.teachers = teachers;
     }
@@ -42,7 +46,7 @@ public class TeacherAppointmentAdapter extends RecyclerView.Adapter<TeacherAppoi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_layout_teacher, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.rv_layout_teacher, null);
         return new MyViewHolder(view);
     }
 
