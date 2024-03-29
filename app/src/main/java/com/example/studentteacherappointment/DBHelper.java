@@ -5,9 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.studentteacherappointment.models.SubjectsModel;
+import com.example.studentteacherappointment.models.TeacherSubjectModel;
+
+import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper
 {
@@ -34,13 +39,15 @@ public class DBHelper extends SQLiteOpenHelper
     private static final String TABLE_NAME_SUBJECT_TEACHER = "teacherSubjectsTbl",
                                 COLUMN_ID_AP = "_id",
                                 COLUMN_SUBJECT_AP = "subject",
-                                COLUMN_ID_TEACHER_AP = "teacherId";
+                                COLUMN_ID_TEACHER_AP = "teacherIdAP";
 
     private static final String student = "Student", teacher = "Teacher";
+    private Context context;
 
     public DBHelper(@Nullable Context context)
     {
         super(context, DB_NAME, null, DB_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -53,7 +60,7 @@ public class DBHelper extends SQLiteOpenHelper
                COLUMN_LAST_NAME_STUDENT + " VARCHAR(50), " +
                COLUMN_GENDER_STUDENT + " VARCHAR(50), " +
                COLUMN_USERNAME_STUDENT + " VARCHAR(50), " +
-               COLUMN_PASSWORD_STUDENT + " VARCHAR(50))";
+               COLUMN_PASSWORD_STUDENT + " VARCHAR(50));";
        db.execSQL(studentQuery);
 
         String teacherQuery = "CREATE TABLE " + TABLE_NAME_TEACHER + " (" +
@@ -63,16 +70,20 @@ public class DBHelper extends SQLiteOpenHelper
                 COLUMN_LAST_NAME_TEACHER + " VARCHAR(50), " +
                 COLUMN_GENDER_TEACHER + " VARCHAR(50), " +
                 COLUMN_USERNAME_TEACHER + " VARCHAR(50), " +
-                COLUMN_PASSWORD_TEACHER + " VARCHAR(50))";
+                COLUMN_PASSWORD_TEACHER + " VARCHAR(50));";
         db.execSQL(teacherQuery);
 
-        String teachSubjQuery = "CREATE TABLE "+TABLE_NAME_SUBJECT_TEACHER+" ("
+        /*String teachSubjQuery = "CREATE TABLE "+TABLE_NAME_SUBJECT_TEACHER+" ("
                                 +COLUMN_ID_AP + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                                 +COLUMN_SUBJECT_AP + " VARCHAR(50), "
-                                + COLUMN_ID_TEACHER_AP + " VARCHAR(50) ,FOREIGN KEY ("
-                                +COLUMN_ID_TEACHER_AP+") REFERENCES "
-                                +TABLE_NAME_TEACHER+" ("
-                                +COLUMN_ID_TEACHER+"))";
+                                + COLUMN_ID_TEACHER_AP + " VARCHAR(50));";*/
+        String teachSubjQuery = "CREATE TABLE "+TABLE_NAME_SUBJECT_TEACHER+" ("
+                +COLUMN_ID_AP + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                +COLUMN_SUBJECT_AP + " VARCHAR(50), "
+                + COLUMN_ID_TEACHER_AP + " VARCHAR(50) ,FOREIGN KEY ("
+                +COLUMN_ID_TEACHER_AP+") REFERENCES "
+                +TABLE_NAME_TEACHER+" ("
+                +COLUMN_ID_TEACHER+"))";
         db.execSQL(teachSubjQuery);
     }
 
@@ -187,7 +198,7 @@ public class DBHelper extends SQLiteOpenHelper
         return db.rawQuery("SELECT * FROM "+TABLE_NAME_TEACHER, null);
     }
 
-    public boolean addSubjectData(String subject, String teacherId)
+    /*public boolean addSubjectData(String subject, String teacherId)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -203,13 +214,126 @@ public class DBHelper extends SQLiteOpenHelper
         {
             return false;
         }
+    }*/
+    public void addSubjectData(String subject, String teacherId)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SUBJECT_AP, subject);
+        values.put(COLUMN_ID_TEACHER_AP, teacherId);
+
+        long i = db.insert(TABLE_NAME_SUBJECT_TEACHER, null, values);
+        SQLiteDatabase db1 = this.getReadableDatabase();
+        Cursor cursor = db1.rawQuery("SELECT * FROM " + TABLE_NAME_SUBJECT_TEACHER, null);
+        cursor.moveToFirst();
+        if(i != -1)
+        {
+            do
+            {
+                Toast.makeText(context, cursor.getString(1) + "" + cursor.getString(2), Toast.LENGTH_SHORT).show();
+            }
+            while(cursor.moveToNext());
+        }
+        else
+        {
+            Toast.makeText(context, "no data found" + cursor.getString(1), Toast.LENGTH_SHORT).show();
+        }
     }
+
+    /*public void addSubjectData(String subject, String teacherId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("INSERT INTO '"+TABLE_NAME_SUBJECT_TEACHER+"'('"+COLUMN_SUBJECT_AP+"','"+COLUMN_ID_TEACHER_AP+"') VALUES('"+subject+"', '"+teacherId+"')", null);
+        cursor.moveToFirst();
+        if(cursor.getCount() > 0)
+        {
+            Toast.makeText(context, cursor.getString(2), Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(context, "no data found" + cursor.getString(2), Toast.LENGTH_SHORT).show();
+        }
+
+    }*/
+
 
     public Cursor readSubjectData(String teacherId)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM '"+TABLE_NAME_SUBJECT_TEACHER+"' WHERE '"+COLUMN_ID_TEACHER_AP+"' = '"+teacherId+"'", null);
     }
+
+    public Cursor readAllSubjectData()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " +TABLE_NAME_SUBJECT_TEACHER, null);
+    }
+
+
+    public ArrayList<SubjectsModel> getSubjectsList()
+    {
+        ArrayList<SubjectsModel> subjects = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME_SUBJECT_TEACHER, null);
+
+        if(cursor.moveToNext())
+        {
+            do
+            {
+                String subject = cursor.getString(1);
+                String teacherId = cursor.getString(2);
+
+                subjects.add(new SubjectsModel(subject, teacherId));
+            }while (cursor.moveToNext());
+        }
+        return subjects;
+    }
+
+
+    public ArrayList<TeacherSubjectModel> getTeachersList()
+    {
+        ArrayList<TeacherSubjectModel> teachers = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME_TEACHER, null);
+
+        if(cursor.moveToNext())
+        {
+            do
+            {
+                String id = cursor.getString(0);
+                String fname = cursor.getString(1);
+                String mname = cursor.getString(2);
+                String lname = cursor.getString(3);
+
+                teachers.add(new TeacherSubjectModel(id, fname, mname, lname, null));
+            }while (cursor.moveToNext());
+        }
+        return teachers;
+    }
+
+    public ArrayList<TeacherSubjectModel> getTeacherSubjectData()
+    {
+        ArrayList<TeacherSubjectModel> teachers = new ArrayList<>();
+        ArrayList<SubjectsModel> subjects = new ArrayList<>();
+
+        for(SubjectsModel subject : subjects)
+        {
+            for(TeacherSubjectModel teacher : teachers)
+            {
+                if(subject.getTeacherId().equals(teacher.getId()))
+                {
+                    String subj = subject.getSubject();
+                    teacher.setSubject(subj);
+                }
+            }
+        }
+        return teachers;
+    }
+
+
+
 
 
 

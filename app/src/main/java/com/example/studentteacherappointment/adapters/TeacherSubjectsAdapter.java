@@ -16,15 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studentteacherappointment.DBHelper;
 import com.example.studentteacherappointment.R;
 import com.example.studentteacherappointment.activities.SetAppointmentActivity;
-import com.example.studentteacherappointment.models.TeacherAdapterModel;
+import com.example.studentteacherappointment.models.TeacherSubjectModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TeacherSubjectsAdapter extends RecyclerView.Adapter<TeacherSubjectsAdapter.MyViewHolder>
 {
     private Context context;
-    private ArrayList<TeacherAdapterModel> teachers;
+    private ArrayList<TeacherSubjectModel> teachers;
     private DBHelper dbHelper;
 
     public TeacherSubjectsAdapter(Context context)
@@ -32,12 +31,12 @@ public class TeacherSubjectsAdapter extends RecyclerView.Adapter<TeacherSubjects
         this.context = context;
     }
 
-    public void setTeachers(ArrayList<TeacherAdapterModel> teachers)
+    public void setTeachers(ArrayList<TeacherSubjectModel> teachers)
     {
         this.teachers = teachers;
     }
 
-    public void setFilteredTeachers(ArrayList<TeacherAdapterModel> teachers)
+    public void setFilteredTeachers(ArrayList<TeacherSubjectModel> teachers)
     {
         this.teachers = teachers;
     }

@@ -1,6 +1,6 @@
 package com.example.studentteacherappointment.models;
 
-public class TeacherAdapterModel
+public class TeacherSubjectModel
 {
     private String id;
     private String fname;
@@ -8,7 +8,7 @@ public class TeacherAdapterModel
     private String lname;
     private String subject;
 
-    public TeacherAdapterModel(String id, String fname, String mname, String lname, String subject)
+    public TeacherSubjectModel(String id, String fname, String mname, String lname, String subject)
     {
         this.id = id;
         this.fname = fname;
@@ -40,5 +40,10 @@ public class TeacherAdapterModel
     public String getSubject()
     {
         return subject;
+    }
+
+    public void setSubject(String subject)
+    {
+        this.subject = subject;
     }
 }

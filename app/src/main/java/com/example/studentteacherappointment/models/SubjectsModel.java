@@ -2,18 +2,18 @@ package com.example.studentteacherappointment.models;
 
 public class SubjectsModel
 {
-    private String id;
+    private String subject;
     private String teacherId;
 
-    public SubjectsModel(String id, String teacherId)
+    public SubjectsModel(String subject, String teacherId)
     {
-        this.id = id;
+        this.subject = subject;
         this.teacherId = teacherId;
     }
 
-    public String getId()
+    public String getSubject()
     {
-        return id;
+        return subject;
     }
 
     public String getTeacherId()

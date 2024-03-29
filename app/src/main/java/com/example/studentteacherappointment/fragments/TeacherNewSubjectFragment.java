@@ -3,7 +3,6 @@ package com.example.studentteacherappointment.fragments;
 import android.database.Cursor;
 import android.os.Bundle;
 
-import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -11,19 +10,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.studentteacherappointment.CustomToast;
 import com.example.studentteacherappointment.DBHelper;
 import com.example.studentteacherappointment.R;
-import com.example.studentteacherappointment.models.TeacherAdapterModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
 
 public class TeacherNewSubjectFragment extends Fragment
 {
@@ -60,7 +53,6 @@ public class TeacherNewSubjectFragment extends Fragment
 
         btn_create = getView().findViewById(R.id.btnCreateTeach);
 
-        dbHelper = new DBHelper(getContext());
     }
 
     private void setListener()
@@ -73,6 +65,14 @@ public class TeacherNewSubjectFragment extends Fragment
     private void addSubjectProcess()
     {
         CustomToast toast = new CustomToast();
+        dbHelper = new DBHelper(getContext());
+        String subject = et_subject.getText().toString().trim();
+        dbHelper.addSubjectData(subject, getIdExtra());
+        dbHelper.close();
+    }
+    /* private void addSubjectProcess()
+    {
+        CustomToast toast = new CustomToast();
 
         String subject = et_subject.getText().toString().trim();
         if(dbHelper.addSubjectData(subject, getIdExtra()))
@@ -83,10 +83,11 @@ public class TeacherNewSubjectFragment extends Fragment
         {
             toast.myToast(getContext(), R.drawable.ic_failed    , "New Subject Error", "Failed");
         }
-    }
+    }*/
 
     private String checkGender()
     {
+        dbHelper = new DBHelper(getContext());
         Cursor cursor = dbHelper.readData("Teacher", getIdExtra());
 
         return  cursor.getString(4);
