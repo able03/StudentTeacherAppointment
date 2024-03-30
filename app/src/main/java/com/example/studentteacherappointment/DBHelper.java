@@ -300,7 +300,25 @@ public class DBHelper extends SQLiteOpenHelper
         return db.rawQuery("SELECT * FROM '"+TABLE_STUDENT_APPOINTMENT+"' WHERE '"+COLUMN_ID_APPOINTMENT+"' = '"+aptId+"'", null);
     }
 
+    public void updateAptStatus(String newStatus, String aptId)
+    {
+        SQLiteDatabase db  = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_STATUS_APPOINTMENT, newStatus);
 
+        String selection =  COLUMN_ID_APPOINTMENT + " = ?";
+        String[] selectionArgs = {aptId};
+
+        long i = db.update(TABLE_STUDENT_APPOINTMENT, values, selection, selectionArgs);
+        if(i > 0)
+        {
+            Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
 

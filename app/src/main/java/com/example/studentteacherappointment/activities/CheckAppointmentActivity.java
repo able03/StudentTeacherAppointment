@@ -82,11 +82,13 @@ public class CheckAppointmentActivity extends AppCompatActivity
         dbHelper = new DBHelper(this);
 
         btn_accept.setOnClickListener(accept -> {
-
+            dbHelper.updateAptStatus("Accepted", getAptItemId());
+            finish();
         });
 
         btn_decline.setOnClickListener(decline -> {
-
+            dbHelper.updateAptStatus("Declined", getAptItemId());
+            finish();
         });
 
         dbHelper.close();
