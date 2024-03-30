@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menuMyAppointmentTeacher"
+        android:id="@+id/menuSubjectsTeacher"
         android:icon="@drawable/ic_my_appointment"
-        android:title="Appointments"
+        android:title="Subjects"
         app:showAsAction="withText" />
 
     <item

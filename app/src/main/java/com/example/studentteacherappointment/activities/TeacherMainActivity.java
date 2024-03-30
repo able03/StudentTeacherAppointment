@@ -40,7 +40,7 @@ public class TeacherMainActivity extends AppCompatActivity
     {
         bnv_teacher.setOnItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
-            if(id == R.id.menuMyAppointmentTeacher)
+            if(id == R.id.menuSubjectsTeacher)
             {
                 replaceFragment(new TeacherSubjectsFragment());
             }

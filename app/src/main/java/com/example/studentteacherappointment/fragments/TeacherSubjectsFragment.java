@@ -100,31 +100,37 @@ public class TeacherSubjectsFragment extends Fragment
     {
         ArrayList<TeacherSubjectModel> teacher = new ArrayList<>();
         TeacherSubjectsAdapter adapter = new TeacherSubjectsAdapter(getContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor subjC = dbHelper.readAllSubjectData();
-        Cursor teachC = dbHelper.readAllTeacherData();
-
-        String id = getIdExtra();
-
-        subjC.moveToFirst();
-        teachC.moveToFirst();
-        do
+        while (subjC.moveToNext())
         {
-            String subjId = subjC.getString(2);
-            String teachId = teachC.getString(0);
+            String subj = subjC.getString(1);
+            String teachId = subjC.getString(2);
 
-            if(id.equals(subjId) || id.equals(teachId))
+            if(teachId.equals(getIdExtra()))
             {
-                Toast.makeText(getContext(), subjId, Toast.LENGTH_SHORT).show();
+                Cursor teachC = dbHelper.readData("Teacher", teachId);
+                if(teachC.moveToFirst())
+                {
+                    String fname = teachC.getString(1);
+                    String mname = teachC.getString(2);
+                    String lname = teachC.getString(3);
+
+                    teacher.add(new TeacherSubjectModel(teachId, fname, mname, lname, subj));
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "no data", Toast.LENGTH_SHORT).show();
+                }
             }
-            else
-            {
-                Toast.makeText(getContext(), teachId, Toast.LENGTH_SHORT).show();
-            }
-        }while(subjC.moveToNext() || teachC.moveToNext());
 
 
+            adapter.setTeachers(teacher);
+
+            rv_subjects.setAdapter(adapter);
+            rv_subjects.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        }
     }
     /*private void populateRV()
     {
