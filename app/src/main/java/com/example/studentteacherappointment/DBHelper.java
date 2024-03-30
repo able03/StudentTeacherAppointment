@@ -294,11 +294,13 @@ public class DBHelper extends SQLiteOpenHelper
        return db.rawQuery("SELECT * FROM '"+TABLE_STUDENT_APPOINTMENT+"' WHERE '"+COLUMN_ID_STUDENT_APPOINTMENT+"' = '"+id+"'", null);
     }
 
-    public Cursor getAppointmentData(String studentId, String teacherId, String date)
+    public Cursor readAppointmentData(String aptId)
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM '"+TABLE_STUDENT_APPOINTMENT+"' WHERE '"+COLUMN_ID_STUDENT_APPOINTMENT+"' = '"+studentId+"' AND '"+COLUMN_ID_TEACHER_APPOINTMENT+"' = '"+teacherId+"' AND '"+COLUMN_DATE_APPOINTMENT+"' = '"+date+"'", null);
+        return db.rawQuery("SELECT * FROM '"+TABLE_STUDENT_APPOINTMENT+"' WHERE '"+COLUMN_ID_APPOINTMENT+"' = '"+aptId+"'", null);
     }
+
+
 
 
 

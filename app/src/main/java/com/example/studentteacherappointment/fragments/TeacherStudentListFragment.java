@@ -70,6 +70,7 @@ public class TeacherStudentListFragment extends Fragment
                 Cursor studC = dbHelper.readData("Student", studId);
                 if(studC.moveToFirst())
                 {
+                    String aptId = appointmentC.getString(0);
                     String studentId = studC.getString(0);
                     String fname = studC.getString(1);
                     String mname = studC.getString(2);
@@ -82,7 +83,7 @@ public class TeacherStudentListFragment extends Fragment
 
                     String status = appointmentC.getString(4);
 
-                    students.add(new StudentAdapterModel(studentId, fname, mname, lname, subj,teachName, date, status));
+                    students.add(new StudentAdapterModel(aptId, studentId, fname, mname, lname, subj,teachName, date, status));
                 }
             }
         }

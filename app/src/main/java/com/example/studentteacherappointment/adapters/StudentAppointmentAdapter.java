@@ -59,7 +59,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
     @Override
     public void onBindViewHolder(@NonNull StudentAppointmentAdapter.MyViewHolder holder, int position)
     {
-
+        String aptId = students.get(position).getAppointmentId();
         String id = students.get(position).getId();
         String fname = students.get(position).getFname();
         String mname = students.get(position).getMname();
@@ -69,6 +69,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
         String status = students.get(position).getStatus();
         String subject = students.get(position).getSubject();
 
+        holder.tv_apt_id.setText(aptId);
         holder.tv_id.setText(id);
         holder.tv_fname.setText(fname);
         holder.tv_mname.setText(mname);
@@ -97,6 +98,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
             holder.cv_student.setOnClickListener(cvStud -> {
                 Intent intent = new Intent(context, CheckAppointmentActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putString("aptId", aptId);
                 bundle.putString("id", id);
                 bundle.putString("teachName", teachName);
                 bundle.putString("date", date);
@@ -118,7 +120,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
 
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView tv_fname, tv_mname, tv_lname, tv_teacher, tv_date, tv_status, tv_id, tv_subject;
+        private TextView tv_fname, tv_mname, tv_lname, tv_teacher, tv_date, tv_status, tv_id, tv_subject, tv_apt_id;
         private ImageView iv_profile;
         private CardView cv_student;
 
@@ -133,6 +135,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
             tv_status = itemView.findViewById(R.id.tvStatusStudent);
             tv_id = itemView.findViewById(R.id.tvIDStudent);
             tv_subject = itemView.findViewById(R.id.tvSubjectStudent);
+            tv_apt_id = itemView.findViewById(R.id.tvAppointmentId);
 
             iv_profile = itemView.findViewById(R.id.ivProfileStudent);
 

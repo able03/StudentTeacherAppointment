@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.studentteacherappointment.DBHelper;
 import com.example.studentteacherappointment.R;
@@ -65,15 +66,38 @@ public class CheckAppointmentActivity extends AppCompatActivity
 
         dbHelper = new DBHelper(this);
         Cursor cursor = dbHelper.readAllAppointmentData();
-        cursor.moveToFirst();
-        String purpose = cursor.getString(5);
-        et_purpose.setText(purpose);
+        while(cursor.moveToNext())
+        {
+            if(cursor.getString(0).equals(getAptItemId()))
+            {
+                et_purpose.setText(cursor.getString(5));
+            }
+        }
+        dbHelper.close();
+
     }
     
     private void setListeners()
     {
+        dbHelper = new DBHelper(this);
+
+        btn_accept.setOnClickListener(accept -> {
+
+        });
+
+        btn_decline.setOnClickListener(decline -> {
+
+        });
+
+        dbHelper.close();
 
     }
+
+    private String getAptItemId()
+    {
+        return getIntent().getStringExtra("aptId");
+    }
+
 
     private String getTeachIdExtra()
     {

@@ -105,6 +105,7 @@ public class StudentMyAppointmentFragment extends Fragment
                 Cursor studC = dbHelper.readData("Student", myId);
                 if(studC.moveToFirst())
                 {
+                    String aptId = appointmentC.getString(0);
                     String fname = studC.getString(1);
                     String mname = studC.getString(2);
                     String lname = studC.getString(3);
@@ -116,7 +117,7 @@ public class StudentMyAppointmentFragment extends Fragment
 
                     String status = appointmentC.getString(4);
 
-                    students.add(new StudentAdapterModel(myId, fname, mname, lname, subj,teachName, date, status));
+                    students.add(new StudentAdapterModel(aptId, myId, fname, mname, lname, subj,teachName, date, status));
                 }
             }
         }
