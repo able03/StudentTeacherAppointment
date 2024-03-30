@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,14 +19,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class SetAppointmentActivity extends AppCompatActivity
 {
     private TextInputLayout lo_id_student, lo_id_teacher, lo_name_teacher, lo_date, lo_purpose;
     private TextInputEditText et_id_student, et_id_teacher, et_name_teacher, et_date, et_purpose;
     private TextView tv_subject, tv_status;
-    private MaterialButton btn_accept, btn_submit;
+    private MaterialButton btn_accept, btn_decline, btn_submit;
     private DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,6 +57,7 @@ public class SetAppointmentActivity extends AppCompatActivity
 
         btn_accept = findViewById(R.id.btnAccept);
         btn_submit = findViewById(R.id.btnSubmitOrDecline);
+        btn_decline = btn_submit;
     }
 
     private void setDateListener()
@@ -71,7 +69,7 @@ public class SetAppointmentActivity extends AppCompatActivity
             int day1 = calendar.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog datePickerDialog = new DatePickerDialog(SetAppointmentActivity.this,
                     (view, year, month, dayOfMonth) ->
-                    et_date.setText(String.format("%02d", month1 + 1) + "/" + String.format("%02d", day1) + "/" + String.format("%04d", year1)),
+                    et_date.setText(String.format("%02d", month + 1) + "/" + String.format("%02d", dayOfMonth) + "/" + String.format("%04d", year)),
                     year1, month1, day1);
             datePickerDialog.show();
         });
@@ -131,6 +129,7 @@ public class SetAppointmentActivity extends AppCompatActivity
             btn_accept.setVisibility(View.VISIBLE);
             et_purpose.setEnabled(false);
             et_date.setEnabled(false);
+            btn_submit.setText("DECLINE");
             lo_date.setBackground(getResources().getDrawable(R.drawable.bg_light_gray));
             lo_purpose.setBackground(getResources().getDrawable(R.drawable.bg_light_gray));
         }
@@ -154,7 +153,7 @@ public class SetAppointmentActivity extends AppCompatActivity
        }
        else
        {
-
+           Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
        }
     }
 

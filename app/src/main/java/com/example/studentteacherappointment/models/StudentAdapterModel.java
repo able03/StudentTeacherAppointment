@@ -25,6 +25,12 @@ public class StudentAdapterModel
         this.status = status;
     }
 
+    public String getStudentName()
+    {
+        return fname + " " + mname + " " + lname;
+    }
+
+
     public String getId()
     {
         return id;

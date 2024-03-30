@@ -48,6 +48,7 @@ public class StudentMyAppointmentFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
         initValues();
+        setHero();
         populateRV();
 
     }
@@ -64,6 +65,31 @@ public class StudentMyAppointmentFragment extends Fragment
         rv_appointments = getView().findViewById(R.id.rvMyAppointmentStud);
     }
 
+    private void setHero()
+    {
+        dbHelper = new DBHelper(getContext());
+        Cursor cursor = dbHelper.readData("Student", getIdExtra());
+        if(cursor.moveToFirst())
+        {
+            String fname = cursor.getString(1);
+            String gender = cursor.getString(4);
+
+            tv_fname.setText(fname);
+            tv_id.setText(getIdExtra());
+
+            if(gender.equals("Female"))
+            {
+                iv_profile.setImageResource(R.drawable.ic_female);
+            }
+            else
+            {
+                iv_profile.setImageResource(R.drawable.ic_male);
+            }
+            dbHelper.close();
+        }
+    }
+
+
     private void populateRV()
     {
         ArrayList<StudentAdapterModel> students = new ArrayList<>();
@@ -73,31 +99,30 @@ public class StudentMyAppointmentFragment extends Fragment
         while(appointmentC.moveToNext())
         {
             String myId = appointmentC.getString(6);
-            Cursor studC = dbHelper.readData("Student", myId);
-            if(studC.moveToFirst())
-            {
-               String fname = studC.getString(1);
-               String mname = studC.getString(2);
-               String lname = studC.getString(3);
+           if(myId.equals(getIdExtra()))
+           {
+               Cursor studC = dbHelper.readData("Student", myId);
+               if(studC.moveToFirst())
+               {
+                   String fname = studC.getString(1);
+                   String mname = studC.getString(2);
+                   String lname = studC.getString(3);
 
-               String subj = appointmentC.getString(1);
-               String teachName = appointmentC.getString(2);
+                   String subj = appointmentC.getString(1);
+                   String teachName = appointmentC.getString(2);
 
+                   Date date = parseDate(appointmentC.getString(3));
 
-               Date date = parseDate(appointmentC.getString(3));
+                   String status = appointmentC.getString(4);
 
-
-                String status = appointmentC.getString(4);
-               String purpose = appointmentC.getString(5);
-                Toast.makeText(getContext(), String.valueOf(date), Toast.LENGTH_SHORT).show();
-
-               students.add(new StudentAdapterModel(myId, fname, mname, lname, subj,teachName, date, status));
-            }
+                   students.add(new StudentAdapterModel(myId, fname, mname, lname, subj,teachName, date, status));
+               }
+           }
         }
 
 
-        StudentAppointmentAdapter studentAppointmentAdapter = new StudentAppointmentAdapter(getContext(), students);
-
+        StudentAppointmentAdapter studentAppointmentAdapter = new StudentAppointmentAdapter(getContext(), getActivity());
+        studentAppointmentAdapter.setStudents(students);
         rv_appointments.setAdapter(studentAppointmentAdapter);
         rv_appointments.setLayoutManager(new LinearLayoutManager(getContext()));
     }

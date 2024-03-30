@@ -1,5 +1,6 @@
 package com.example.studentteacherappointment.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,21 +20,31 @@ import com.example.studentteacherappointment.R;
 import com.example.studentteacherappointment.activities.SetAppointmentActivity;
 import com.example.studentteacherappointment.models.StudentAdapterModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppointmentAdapter.MyViewHolder>
 {
     private Context context;
-    private List<StudentAdapterModel> students;
-    private DBHelper dbHelper;
 
-    public StudentAppointmentAdapter(Context context, List<StudentAdapterModel> students)
+
+
+    private ArrayList<StudentAdapterModel> students;
+    private DBHelper dbHelper;
+    private Activity activity;
+
+    public StudentAppointmentAdapter(Context context, Activity activity)
     {
         this.context = context;
+        this.activity = activity;
+    }
+
+    public void setStudents(ArrayList<StudentAdapterModel> students)
+    {
         this.students = students;
     }
 
-    public void setFilteredStudents(List<StudentAdapterModel> students)
+    public void setFilteredStudents(ArrayList<StudentAdapterModel> students)
     {
         this.students = students;
     }
@@ -54,7 +65,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
         String fname = students.get(position).getFname();
         String mname = students.get(position).getMname();
         String lname = students.get(position).getLname();
-        String teacherName = String.format("%s %s %s", fname, mname, lname);
+//        String teacherName = String.format("%s %s %s", fname, mname, lname);
 
         holder.tv_fname.setText(fname);
         holder.tv_mname.setText(mname);
@@ -63,6 +74,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
         holder.tv_date.setText(String.valueOf(students.get(position).getDate()));
         holder.tv_status.setText(students.get(position).getStatus());
         holder.tv_id.setText(id);
+        holder.tv_subject.setText(students.get(position).getSubject());
 
         String gender = checkGender(id);
         if(gender.equalsIgnoreCase("Female"))
@@ -77,6 +89,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
         holder.cv_student.setOnClickListener(cvStud -> {
             Intent intent = new Intent(context, SetAppointmentActivity.class);
             intent.putExtra("id", id);
+            intent.putExtra("role", activity.getIntent().getStringExtra("_role"));
             context.startActivity(intent);
         });
     }
@@ -89,7 +102,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
 
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView tv_fname, tv_mname, tv_lname, tv_teacher, tv_date, tv_status, tv_id;
+        private TextView tv_fname, tv_mname, tv_lname, tv_teacher, tv_date, tv_status, tv_id, tv_subject;
         private ImageView iv_profile;
         private CardView cv_student;
 
@@ -103,12 +116,14 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
             tv_date = itemView.findViewById(R.id.tvDateStudent);
             tv_status = itemView.findViewById(R.id.tvStatusStudent);
             tv_id = itemView.findViewById(R.id.tvIDStudent);
+            tv_subject = itemView.findViewById(R.id.tvSubjectStudent);
 
             iv_profile = itemView.findViewById(R.id.ivProfileStudent);
 
             cv_student = itemView.findViewById(R.id.cvStudent);
         }
     }
+
 
 
     private String checkGender(String id)

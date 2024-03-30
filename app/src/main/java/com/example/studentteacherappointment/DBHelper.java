@@ -267,7 +267,7 @@ public class DBHelper extends SQLiteOpenHelper
         values.put(COLUMN_STATUS_APPOINTMENT, status);
         values.put(COLUMN_PURPOSE_APPOINTMENT, purpose);
         values.put(COLUMN_ID_STUDENT_APPOINTMENT, studentId);
-        values.put(COLUMN_ID_TEACHER_APPOINTMENT, teacher);
+        values.put(COLUMN_ID_TEACHER_APPOINTMENT, teacherId);
 
         long i = db.insert(TABLE_STUDENT_APPOINTMENT, null, values);
         if(i != -1)
