@@ -88,12 +88,14 @@ public class LoginActivity extends AppCompatActivity
             if(role.equals(student)){
                 Intent intent = new Intent(this, StudentMainActivity.class);
                 intent.putExtra("_id", id);
+                intent.putExtra("_role", role);
                 startActivity(intent);
             }
             else if(role.equals(teacher))
             {
                 Intent intent = new Intent(this, TeacherMainActivity.class);
                 intent.putExtra("_id", id);
+                intent.putExtra("_role", role);
                 startActivity(intent);
             }
         }

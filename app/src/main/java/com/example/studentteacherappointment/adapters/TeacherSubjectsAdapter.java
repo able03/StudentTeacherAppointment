@@ -1,8 +1,10 @@
 package com.example.studentteacherappointment.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +25,14 @@ import java.util.ArrayList;
 public class TeacherSubjectsAdapter extends RecyclerView.Adapter<TeacherSubjectsAdapter.MyViewHolder>
 {
     private Context context;
+    private Activity activity;
     private ArrayList<TeacherSubjectModel> teachers;
     private DBHelper dbHelper;
 
-    public TeacherSubjectsAdapter(Context context)
+    public TeacherSubjectsAdapter(Context context, Activity activity)
     {
         this.context = context;
+        this.activity = activity;
     }
 
     public void setTeachers(ArrayList<TeacherSubjectModel> teachers)
@@ -53,11 +57,17 @@ public class TeacherSubjectsAdapter extends RecyclerView.Adapter<TeacherSubjects
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
         String id = teachers.get(position).getId();
+        String subj = teachers.get(position).getSubject();
+        String fname = teachers.get(position).getFname();
+        String mname = teachers.get(position).getMname();
+        String lname = teachers.get(position).getLname();
 
-        holder.tv_fname.setText(teachers.get(position).getFname());
-        holder.tv_mname.setText(teachers.get(position).getMname());
-        holder.tv_lname.setText(teachers.get(position).getLname());
-        holder.tv_subject.setText(teachers.get(position).getSubject());
+        String teacherName = String.format("%s %s %s", fname, mname, lname);
+
+        holder.tv_fname.setText(fname);
+        holder.tv_mname.setText(mname);
+        holder.tv_lname.setText(lname);
+        holder.tv_subject.setText(subj);
         holder.tv_id.setText(id);
 
         String gender = checkGender(id);
@@ -70,8 +80,20 @@ public class TeacherSubjectsAdapter extends RecyclerView.Adapter<TeacherSubjects
             holder.iv_profile.setImageResource(R.drawable.ic_male);
         }
 
+        String role = activity.getIntent().getStringExtra("_role");
+        String logId = activity.getIntent().getStringExtra("_id");
+
         holder.cv_teacher.setOnClickListener(cardview -> {
             Intent intent = new Intent(context, SetAppointmentActivity.class);
+            Bundle bundle = new Bundle();
+
+            bundle.putString("teachId", id);
+            bundle.putString("studId", logId);
+            bundle.putString("subject",subj);
+            bundle.putString("role", role);
+            bundle.putString("teacherName", teacherName);
+
+            intent.putExtras(bundle);
             context.startActivity(intent);
         });
     }

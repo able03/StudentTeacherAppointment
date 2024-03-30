@@ -1,6 +1,7 @@
 package com.example.studentteacherappointment.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentteacherappointment.DBHelper;
 import com.example.studentteacherappointment.R;
+import com.example.studentteacherappointment.activities.SetAppointmentActivity;
 import com.example.studentteacherappointment.models.StudentAdapterModel;
 
 import java.util.List;
@@ -47,16 +49,20 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
     @Override
     public void onBindViewHolder(@NonNull StudentAppointmentAdapter.MyViewHolder holder, int position)
     {
-        String id = students.get(position).getId();
 
-        holder.tv_fname.setText(students.get(position).getFname());
-        holder.tv_mname.setText(students.get(position).getMname());
-        holder.tv_lname.setText(students.get(position).getLname());
+        String id = students.get(position).getId();
+        String fname = students.get(position).getFname();
+        String mname = students.get(position).getMname();
+        String lname = students.get(position).getLname();
+        String teacherName = String.format("%s %s %s", fname, mname, lname);
+
+        holder.tv_fname.setText(fname);
+        holder.tv_mname.setText(mname);
+        holder.tv_lname.setText(lname);
         holder.tv_teacher.setText(students.get(position).getTeacher());
         holder.tv_date.setText(String.valueOf(students.get(position).getDate()));
         holder.tv_status.setText(students.get(position).getStatus());
         holder.tv_id.setText(id);
-
 
         String gender = checkGender(id);
         if(gender.equalsIgnoreCase("Female"))
@@ -69,7 +75,9 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
         }
 
         holder.cv_student.setOnClickListener(cvStud -> {
-            Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, SetAppointmentActivity.class);
+            intent.putExtra("id", id);
+            context.startActivity(intent);
         });
     }
 

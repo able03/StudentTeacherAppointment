@@ -57,13 +57,12 @@ public class TeacherSubjectsFragment extends Fragment
         tv_fname = getView().findViewById(R.id.tvFNameTeacherMA);
         tv_id = getView().findViewById(R.id.tvIdTeacherMA);
 
-        dbHelper = new DBHelper(getContext());
-
         rv_subjects = getView().findViewById(R.id.rvSubjectsTeacher);
     }
 
     private void setHero()
     {
+        dbHelper = new DBHelper(getContext());
         Cursor cursor = dbHelper.readData("Teacher", getIdExtra());
         if(cursor.moveToFirst())
         {
@@ -81,25 +80,15 @@ public class TeacherSubjectsFragment extends Fragment
             {
                 iv_profile.setImageResource(R.drawable.ic_male);
             }
-
+            dbHelper.close();
         }
     }
 
-    private void setRV()
-    {
-        ArrayList<TeacherSubjectModel> teacher = dbHelper.getTeacherSubjectData();
-    TeacherSubjectsAdapter adapter = new TeacherSubjectsAdapter(getContext());
-        adapter.setTeachers(teacher);
-
-        rv_subjects.setAdapter(adapter);
-        rv_subjects.setLayoutManager(new LinearLayoutManager(getContext()));
-}
-
-
     private void populateRV()
     {
-        ArrayList<TeacherSubjectModel> teacher = new ArrayList<>();
-        TeacherSubjectsAdapter adapter = new TeacherSubjectsAdapter(getContext());
+        dbHelper = new DBHelper(getContext());
+        ArrayList<TeacherSubjectModel> teachers = new ArrayList<>();
+        TeacherSubjectsAdapter adapter = new TeacherSubjectsAdapter(getContext(), getActivity());
 
         Cursor subjC = dbHelper.readAllSubjectData();
         while (subjC.moveToNext())
@@ -116,104 +105,20 @@ public class TeacherSubjectsFragment extends Fragment
                     String mname = teachC.getString(2);
                     String lname = teachC.getString(3);
 
-                    teacher.add(new TeacherSubjectModel(teachId, fname, mname, lname, subj));
+                    teachers.add(new TeacherSubjectModel(teachId, fname, mname, lname, subj));
                 }
                 else
                 {
                     Toast.makeText(getContext(), "no data", Toast.LENGTH_SHORT).show();
                 }
             }
-
-
-            adapter.setTeachers(teacher);
+            adapter.setTeachers(teachers);
 
             rv_subjects.setAdapter(adapter);
             rv_subjects.setLayoutManager(new LinearLayoutManager(getContext()));
-
+            dbHelper.close();
         }
     }
-    /*private void populateRV()
-    {
-        ArrayList<TeacherSubjectModel> teacher = new ArrayList<>();
-        TeacherSubjectsAdapter adapter = new TeacherSubjectsAdapter(getContext());
-
-        Cursor subjectsCursor = dbHelper.readSubjectData(getIdExtra());
-        subjectsCursor.moveToFirst();
-
-        Cursor teacherCursor = null;
-        do
-        {
-             String subjId = subjectsCursor.getString(2);
-             teacherCursor = dbHelper.readData("Teacher", subjId);
-             if(teacherCursor.moveToFirst())
-             {
-                 String subj = subjectsCursor.getString(1);
-                 String fname = teacherCursor.getString(1);
-                 Toast.makeText(getContext(), fname +": " + subj, Toast.LENGTH_SHORT).show();
-             }
-            subjectsCursor.moveToNext();
-        }
-        while(teacherCursor.moveToNext());
-
-    }*/
-
-
-
-    /*private void populateRecyclerView()
-    {
-        ArrayList<TeacherSubjectModel> teachers = new ArrayList<>();
-        TeacherSubjectsAdapter adapter = new TeacherSubjectsAdapter(getContext());
-
-        Cursor subjectCursor = dbHelper.readSubjectData(getIdExtra());
-
-        Cursor cursor1 = null;
-
-        if(subjectCursor.moveToFirst())
-        {
-            cursor1 = dbHelper.readData("Teacher", subjectCursor.getString(2));
-
-            if(cursor1.moveToFirst())
-            {
-                while(cursor1.moveToNext())
-                {
-                    String subj = subjectCursor.getString(1);
-                    String fname = cursor1.getString(1);
-                    String mname = cursor1.getString(2);
-                    String lname = cursor1.getString(3);
-
-                    int count = 0;
-                    count++;
-                    Toast.makeText(getContext(), String.valueOf(count), Toast.LENGTH_SHORT).show();
-
-                    teachers.add(new TeacherSubjectModel(getIdExtra(), fname, mname, lname, subj));
-                }
-            }
-        }
-
-        adapter = new TeacherSubjectsAdapter(getContext());
-        adapter.setTeachers(teachers);
-
-        rv_subjects.setAdapter(adapter);
-        rv_subjects.setLayoutManager(new LinearLayoutManager(getContext()));
-    }*/
-//    private void getSubjectData()
-//    {
-//        Cursor cursor = dbHelper.readSubjectData(getIdExtra());
-//        if(cursor.moveToFirst())
-//        {
-//            do{
-//                String id = cursor.getString(1);
-//                String teacherId = cursor.getString(2);
-//
-//                subjects.add(new SubjectsModel(id, teacherId));
-//                Toast.makeText(getContext(), teacherId, Toast.LENGTH_SHORT).show();
-//            }while(cursor.moveToNext());
-//        }
-//        else
-//        {
-//            Toast.makeText(getContext(), "no data", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     private String getIdExtra()
     {

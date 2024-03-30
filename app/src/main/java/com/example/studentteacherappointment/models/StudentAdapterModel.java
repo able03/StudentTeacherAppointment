@@ -1,6 +1,6 @@
 package com.example.studentteacherappointment.models;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class StudentAdapterModel
 {
