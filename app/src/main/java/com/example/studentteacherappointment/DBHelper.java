@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.example.studentteacherappointment.models.SubjectsModel;
 import com.example.studentteacherappointment.models.TeacherSubjectModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -257,11 +258,12 @@ public class DBHelper extends SQLiteOpenHelper
     public boolean addAppointmentData(String subject, String teacher, Date date, String status,
                                       String purpose, String studentId, String teacherId)
     {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_SUBJECT_APPOINTMENT, subject);
         values.put(COLUMN_TEACHER_APPOINTMENT, teacher);
-        values.put(COLUMN_DATE_APPOINTMENT, date.getDate());
+        values.put(COLUMN_DATE_APPOINTMENT, simpleDateFormat.format(date));
         values.put(COLUMN_STATUS_APPOINTMENT, status);
         values.put(COLUMN_PURPOSE_APPOINTMENT, purpose);
         values.put(COLUMN_ID_STUDENT_APPOINTMENT, studentId);

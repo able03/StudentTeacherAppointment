@@ -102,15 +102,9 @@ public class StudentMyAppointmentFragment extends Fragment
         rv_appointments.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private String formatDate(Date date)
-    {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        return simpleDateFormat.format(date);
-    }
-
     private Date parseDate(String strDate)
     {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
         try
         {
             return simpleDateFormat.parse(strDate);
