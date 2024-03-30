@@ -45,9 +45,8 @@ public class TeacherStudentListFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
         initValues();
+        setRVData();
         populateRV();
-        setListener();
-
     }
 
     private void initValues()
@@ -57,7 +56,7 @@ public class TeacherStudentListFragment extends Fragment
         students = new ArrayList<>();
     }
 
-    private void populateRV()
+    private void setRVData()
     {
         dbHelper = new DBHelper(getContext());
         Cursor appointmentC = dbHelper.readAllAppointmentData();
@@ -71,6 +70,7 @@ public class TeacherStudentListFragment extends Fragment
                 Cursor studC = dbHelper.readData("Student", studId);
                 if(studC.moveToFirst())
                 {
+                    String studentId = studC.getString(0);
                     String fname = studC.getString(1);
                     String mname = studC.getString(2);
                     String lname = studC.getString(3);
@@ -82,11 +82,16 @@ public class TeacherStudentListFragment extends Fragment
 
                     String status = appointmentC.getString(4);
 
-                    students.add(new StudentAdapterModel(myId, fname, mname, lname, subj,teachName, date, status));
+                    students.add(new StudentAdapterModel(studentId, fname, mname, lname, subj,teachName, date, status));
                 }
             }
         }
 
+    }
+
+
+    private void populateRV()
+    {
 
         studentAppointmentAdapter = new StudentAppointmentAdapter(getContext(), getActivity());
         studentAppointmentAdapter.setStudents(students);
@@ -105,49 +110,6 @@ public class TeacherStudentListFragment extends Fragment
             throw new RuntimeException(e);
         }
     }
-
-    private void setListener()
-    {
-        sv_student.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText)
-            {
-                filteredList(newText);
-                return true;
-            }
-        });
-    }
-
-
-    private void filteredList(String newText)
-    {
-        ArrayList<StudentAdapterModel> filteredList = new ArrayList<>();
-        for(StudentAdapterModel student : students)
-        {
-            if(student.getSubject().toLowerCase().contains(newText.toLowerCase()) ||
-                    student.getFname().toLowerCase().contains(newText.toLowerCase()))
-            {
-                filteredList.add(student);
-            }
-        }
-
-        if(filteredList.isEmpty())
-        {
-            Toast.makeText(getContext(), "no data", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            studentAppointmentAdapter.setFilteredStudents(filteredList);
-        }
-    }
-
 
     private String getIdExtra()
     {

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -33,7 +34,6 @@ public class SetAppointmentActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_appointment);
         initValues();
-        setData();
         setRoleAccess();
     }
 
@@ -132,30 +132,60 @@ public class SetAppointmentActivity extends AppCompatActivity
             btn_submit.setText("DECLINE");
             lo_date.setBackground(getResources().getDrawable(R.drawable.bg_light_gray));
             lo_purpose.setBackground(getResources().getDrawable(R.drawable.bg_light_gray));
+
         }
         else
         {
             btn_accept.setVisibility(View.GONE);
             setDateListener();
             setSubmitListener();
-        }
-    }
+            setStudData();
 
+        }
+
+    }
 
     private void setData()
     {
-       if(getRoleExtra().equals("Student"))
-       {
-           et_id_student.setText(getStudIdExtra());
-           et_id_teacher.setText(getTeachIdExtra());
-           et_name_teacher.setText(getTeacherNameExtra());
-           tv_subject.setText(getSubjExtra());
-       }
-       else
-       {
-           Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
-       }
+        dbHelper = new DBHelper(this);
+        Cursor cursor = dbHelper.readStudAptData(getStudIdExtra());
+        if(cursor.moveToFirst())
+        {
+            et_purpose.setText(cursor.getString(5));
+            et_id_teacher.setText(cursor.getString(7));
+        }
+
+        et_id_student.setText(getIntent().getStringExtra("id"));
+        et_date.setText(getIntent().getStringExtra("date"));
+        et_name_teacher.setText(getIntent().getStringExtra("teachName"));
+        tv_subject.setText(getIntent().getStringExtra("subject"));
+        tv_status.setText(getIntent().getStringExtra("status"));
     }
+
+
+
+    private void setStudData()
+    {
+        et_id_student.setText(getStudIdExtra());
+        et_id_teacher.setText(getTeachIdExtra());
+        et_name_teacher.setText(getTeacherNameExtra());
+        tv_subject.setText(getSubjExtra());
+    }
+
+    private void setTeachData()
+    {
+        dbHelper = new DBHelper(this);
+        Cursor cursor = dbHelper.readStudAptData(getIntent().getStringExtra("id"));
+        if(cursor.moveToFirst())
+        {
+            Toast.makeText(this, "shit", Toast.LENGTH_SHORT).show();
+            String name = cursor.getString(1);
+            Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
+        }
+
+        dbHelper.close();
+    }
+
 
     private String getTeachIdExtra()
     {

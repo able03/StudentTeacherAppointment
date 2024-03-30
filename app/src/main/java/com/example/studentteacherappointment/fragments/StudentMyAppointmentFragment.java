@@ -34,6 +34,7 @@ public class StudentMyAppointmentFragment extends Fragment
     private SearchView sv_appointments;
     private RecyclerView rv_appointments;
     private DBHelper dbHelper;
+    private ArrayList<StudentAdapterModel> students;
 
 
     @Override
@@ -49,6 +50,7 @@ public class StudentMyAppointmentFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         initValues();
         setHero();
+        setRVData();
         populateRV();
 
     }
@@ -89,38 +91,42 @@ public class StudentMyAppointmentFragment extends Fragment
         }
     }
 
-
-    private void populateRV()
+    private void setRVData()
     {
-        ArrayList<StudentAdapterModel> students = new ArrayList<>();
+        students = new ArrayList<>();
         dbHelper = new DBHelper(getContext());
         Cursor appointmentC = dbHelper.readAllAppointmentData();
 
         while(appointmentC.moveToNext())
         {
             String myId = appointmentC.getString(6);
-           if(myId.equals(getIdExtra()))
-           {
-               Cursor studC = dbHelper.readData("Student", myId);
-               if(studC.moveToFirst())
-               {
-                   String fname = studC.getString(1);
-                   String mname = studC.getString(2);
-                   String lname = studC.getString(3);
+            if(myId.equals(getIdExtra()))
+            {
+                Cursor studC = dbHelper.readData("Student", myId);
+                if(studC.moveToFirst())
+                {
+                    String fname = studC.getString(1);
+                    String mname = studC.getString(2);
+                    String lname = studC.getString(3);
 
-                   String subj = appointmentC.getString(1);
-                   String teachName = appointmentC.getString(2);
+                    String subj = appointmentC.getString(1);
+                    String teachName = appointmentC.getString(2);
 
-                   Date date = parseDate(appointmentC.getString(3));
+                    Date date = parseDate(appointmentC.getString(3));
 
-                   String status = appointmentC.getString(4);
+                    String status = appointmentC.getString(4);
 
-                   students.add(new StudentAdapterModel(myId, fname, mname, lname, subj,teachName, date, status));
-               }
-           }
+                    students.add(new StudentAdapterModel(myId, fname, mname, lname, subj,teachName, date, status));
+                }
+            }
         }
+    }
 
 
+
+
+    private void populateRV()
+    {
         StudentAppointmentAdapter studentAppointmentAdapter = new StudentAppointmentAdapter(getContext(), getActivity());
         studentAppointmentAdapter.setStudents(students);
         rv_appointments.setAdapter(studentAppointmentAdapter);

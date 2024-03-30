@@ -2,6 +2,7 @@ package com.example.studentteacherappointment.models;
 
 public class SubjectsModel
 {
+    private String id;
     private String subject;
     private String teacherId;
 

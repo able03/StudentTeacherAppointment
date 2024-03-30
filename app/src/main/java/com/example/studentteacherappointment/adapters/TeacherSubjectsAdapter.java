@@ -83,19 +83,22 @@ public class TeacherSubjectsAdapter extends RecyclerView.Adapter<TeacherSubjects
         String role = activity.getIntent().getStringExtra("_role");
         String logId = activity.getIntent().getStringExtra("_id");
 
-        holder.cv_teacher.setOnClickListener(cardview -> {
-            Intent intent = new Intent(context, SetAppointmentActivity.class);
-            Bundle bundle = new Bundle();
+       if(role.equals("Student"))
+       {
+           holder.cv_teacher.setOnClickListener(cardview -> {
+               Intent intent = new Intent(context, SetAppointmentActivity.class);
+               Bundle bundle = new Bundle();
 
-            bundle.putString("teachId", id);
-            bundle.putString("studId", logId);
-            bundle.putString("subject",subj);
-            bundle.putString("role", role);
-            bundle.putString("teacherName", teacherName);
+               bundle.putString("teachId", id);
+               bundle.putString("studId", logId);
+               bundle.putString("subject",subj);
+               bundle.putString("role", role);
+               bundle.putString("teacherName", teacherName);
 
-            intent.putExtras(bundle);
-            context.startActivity(intent);
-        });
+               intent.putExtras(bundle);
+               context.startActivity(intent);
+           });
+       }
     }
 
     @Override

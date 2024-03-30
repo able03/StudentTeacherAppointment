@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -17,11 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentteacherappointment.DBHelper;
 import com.example.studentteacherappointment.R;
-import com.example.studentteacherappointment.activities.SetAppointmentActivity;
+import com.example.studentteacherappointment.activities.CheckAppointmentActivity;
 import com.example.studentteacherappointment.models.StudentAdapterModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppointmentAdapter.MyViewHolder>
 {
@@ -65,16 +64,20 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
         String fname = students.get(position).getFname();
         String mname = students.get(position).getMname();
         String lname = students.get(position).getLname();
-//        String teacherName = String.format("%s %s %s", fname, mname, lname);
+        String teachName = students.get(position).getTeacher();
+        String date = String.valueOf(students.get(position).getDate());
+        String status = students.get(position).getStatus();
+        String subject = students.get(position).getSubject();
 
+        holder.tv_id.setText(id);
         holder.tv_fname.setText(fname);
         holder.tv_mname.setText(mname);
         holder.tv_lname.setText(lname);
-        holder.tv_teacher.setText(students.get(position).getTeacher());
-        holder.tv_date.setText(String.valueOf(students.get(position).getDate()));
-        holder.tv_status.setText(students.get(position).getStatus());
+        holder.tv_teacher.setText(teachName);
+        holder.tv_date.setText(date);
+        holder.tv_status.setText(status);
         holder.tv_id.setText(id);
-        holder.tv_subject.setText(students.get(position).getSubject());
+        holder.tv_subject.setText(subject);
 
         String gender = checkGender(id);
         if(gender.equalsIgnoreCase("Female"))
@@ -86,12 +89,25 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
             holder.iv_profile.setImageResource(R.drawable.ic_male);
         }
 
-        holder.cv_student.setOnClickListener(cvStud -> {
-            Intent intent = new Intent(context, SetAppointmentActivity.class);
-            intent.putExtra("id", id);
-            intent.putExtra("role", activity.getIntent().getStringExtra("_role"));
-            context.startActivity(intent);
-        });
+        String role = activity.getIntent().getStringExtra("_role");
+        String teachId = activity.getIntent().getStringExtra("_id");
+
+        if(role.equals("Teacher"))
+        {
+            holder.cv_student.setOnClickListener(cvStud -> {
+                Intent intent = new Intent(context, CheckAppointmentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", id);
+                bundle.putString("teachName", teachName);
+                bundle.putString("date", date);
+                bundle.putString("teachId", teachId);
+                bundle.putString("status", status);
+                bundle.putString("subject", subject);
+                bundle.putString("role", role);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            });
+        }
     }
 
     @Override
