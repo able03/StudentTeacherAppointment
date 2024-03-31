@@ -151,7 +151,8 @@ public class StudentMyAppointmentFragment extends Fragment
         {
             if(student.getStudentName().toLowerCase().contains(newText.toLowerCase())
                     || student.getSubject().toLowerCase().contains(newText.toLowerCase())
-                    || student.getStatus().toLowerCase().contains(newText.toLowerCase()))
+                    || student.getStatus().toLowerCase().contains(newText.toLowerCase())
+                    || student.getTeacher().toLowerCase().contains(newText.toLowerCase()))
             {
                 filteredList.add(student);
             }

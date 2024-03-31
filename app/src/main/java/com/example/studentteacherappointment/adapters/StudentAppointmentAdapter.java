@@ -62,6 +62,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
     @Override
     public void onBindViewHolder(@NonNull StudentAppointmentAdapter.MyViewHolder holder, int position)
     {
+
         String aptId = students.get(position).getAppointmentId();
         String id = students.get(position).getId();
         String fname = students.get(position).getFname();

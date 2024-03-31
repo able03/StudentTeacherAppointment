@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.example.studentteacherappointment.R;
+import com.example.studentteacherappointment.adapters.StudentAppointmentAdapter;
 import com.example.studentteacherappointment.fragments.TeacherSubjectsFragment;
 import com.example.studentteacherappointment.fragments.TeacherNewSubjectFragment;
 import com.example.studentteacherappointment.fragments.TeacherStudentListFragment;

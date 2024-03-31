@@ -46,6 +46,7 @@ public class StudentTeacherListFragment extends Fragment
         initValues();
         populateRV();
         setSearchViewListener();
+
     }
 
     private void initValues()

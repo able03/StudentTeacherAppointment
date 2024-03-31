@@ -1,5 +1,7 @@
 package com.example.studentteacherappointment.fragments;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import java.util.Date;
 
 public class TeacherStudentListFragment extends Fragment
 {
+    private static final int EDIT_REQUEST_CODE = 1;
     private SearchView sv_student;
     private RecyclerView rv_student;
     private DBHelper dbHelper;
@@ -47,7 +50,6 @@ public class TeacherStudentListFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
         initValues();
-        setRVData();
         populateRV();
         setSearchViewListener();
     }
@@ -56,13 +58,13 @@ public class TeacherStudentListFragment extends Fragment
     {
         sv_student = getView().findViewById(R.id.svStudentList);
         rv_student = getView().findViewById(R.id.rvStudentList);
-        students = new ArrayList<>();
     }
 
-    private void setRVData()
+    private ArrayList<StudentAdapterModel> setRVData()
     {
         dbHelper = new DBHelper(getContext());
         Cursor appointmentC = dbHelper.readAllAppointmentData();
+        ArrayList<StudentAdapterModel> studentTemp =  new ArrayList<>();
 
         while(appointmentC.moveToNext())
         {
@@ -86,10 +88,12 @@ public class TeacherStudentListFragment extends Fragment
 
                     String status = appointmentC.getString(4);
 
-                    students.add(new StudentAdapterModel(aptId, studentId, fname, mname, lname, subj,teachName, date, status));
+                    studentTemp.add(new StudentAdapterModel(aptId, studentId, fname, mname, lname, subj,teachName, date, status));
                 }
             }
         }
+        dbHelper.close();
+        return studentTemp;
 
     }
 
@@ -134,11 +138,9 @@ public class TeacherStudentListFragment extends Fragment
         }
     }
 
-
-
-
     private void populateRV()
     {
+        students = setRVData();
         studentAppointmentAdapter = new StudentAppointmentAdapter(getContext(), getActivity());
         studentAppointmentAdapter.setStudents(students);
         rv_student.setAdapter(studentAppointmentAdapter);

@@ -14,7 +14,7 @@
        android:orientation="vertical">
 
        <TextView
-           android:id="@+id/tvSubjectAP"
+           android:id="@+id/tvSubjectCheck"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="SUBJECT"
@@ -23,13 +23,13 @@
            android:textStyle="bold" />
 
        <com.google.android.material.textfield.TextInputLayout
-           android:id="@+id/loIdStud"
+           android:id="@+id/loIdStudCheck"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginTop="20dp">
 
            <com.google.android.material.textfield.TextInputEditText
-               android:id="@+id/etIdStud"
+               android:id="@+id/etIdStudCheck"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:background="@color/light_gray"
@@ -40,13 +40,13 @@
        </com.google.android.material.textfield.TextInputLayout>
 
        <com.google.android.material.textfield.TextInputLayout
-           android:id="@+id/loIdTeach"
+           android:id="@+id/loIdTeachCheck"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginTop="15dp">
 
            <com.google.android.material.textfield.TextInputEditText
-               android:id="@+id/etIdTeach"
+               android:id="@+id/etIdTeachCheck"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:background="@color/light_gray"
@@ -57,13 +57,13 @@
        </com.google.android.material.textfield.TextInputLayout>
 
        <com.google.android.material.textfield.TextInputLayout
-           android:id="@+id/loTeachNameAP"
+           android:id="@+id/loTeachNameCheck"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginTop="15dp">
 
            <com.google.android.material.textfield.TextInputEditText
-               android:id="@+id/etTeachNameAP"
+               android:id="@+id/etTeachNameCheck"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:background="@color/light_gray"
@@ -75,7 +75,7 @@
 
 
        <com.google.android.material.textfield.TextInputLayout
-           android:id="@+id/loDateAP"
+           android:id="@+id/loDateCheck"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginTop="15dp"
@@ -83,10 +83,12 @@
            app:endIconMode="custom">
 
            <com.google.android.material.textfield.TextInputEditText
-               android:id="@+id/etDateAP"
+               android:id="@+id/etDateCheck"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:inputType="date"
+               android:background="@color/light_gray"
+               android:enabled="false"
                android:hint="Date of appointment" />
 
 
@@ -94,18 +96,20 @@
 
 
        <com.google.android.material.textfield.TextInputLayout
-           android:id="@+id/loPurposeAP"
+           android:id="@+id/loPurposeCheck"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginTop="10dp">
 
 
            <com.google.android.material.textfield.TextInputEditText
-               android:id="@+id/etPurposeAP"
+               android:id="@+id/etPurposeCheck"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:gravity="top"
                android:inputType="textMultiLine"
+               android:background="@color/light_gray"
+               android:enabled="false"
                android:hint="Purpose of appointment"
                android:lines="6" />
 
@@ -127,7 +131,7 @@
                android:textSize="18sp" />
 
            <TextView
-               android:id="@+id/tvStatusAP"
+               android:id="@+id/tvStatusCheck"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:text="Pending" />
@@ -144,26 +148,27 @@
            android:layout_gravity="end">
 
            <com.google.android.material.button.MaterialButton
-               android:id="@+id/btnAccept"
+               android:id="@+id/btnAcceptCheck"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:text="ACCEPT"
                app:cornerRadius="5dp"
-               android:layout_marginEnd="5dp"
-               android:visibility="gone"/>
+               android:backgroundTint="#00EB10"
+               android:layout_marginEnd="10dp"/>
 
            <com.google.android.material.button.MaterialButton
-               android:id="@+id/btnSubmitOrDecline"
+               android:id="@+id/btnDeclineCheck"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="SUBMIT"
+               android:text="DECLINE"
+               android:backgroundTint="#EB0000"
                app:cornerRadius="5dp" />
 
 
        </LinearLayout>
 
-   </LinearLayout>
 
+   </LinearLayout>
 
 
 </ScrollView>

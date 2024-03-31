@@ -2,22 +2,18 @@ package com.example.studentteacherappointment.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.studentteacherappointment.DBHelper;
 import com.example.studentteacherappointment.R;
 import com.example.studentteacherappointment.adapters.StudentAppointmentAdapter;
+import com.example.studentteacherappointment.fragments.TeacherStudentListFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.Currency;
 
 public class CheckAppointmentActivity extends AppCompatActivity
 {
@@ -28,11 +24,12 @@ public class CheckAppointmentActivity extends AppCompatActivity
     private MaterialButton btn_accept, btn_decline;
     private DBHelper dbHelper;
     private StudentAppointmentAdapter adapter;
+    private TeacherStudentListFragment studList;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accept_decline);
+        setContentView(R.layout.activity_check_appointment);
         initValues();
         setData();
         setListeners();
@@ -69,11 +66,11 @@ public class CheckAppointmentActivity extends AppCompatActivity
         et_name_teacher.setText(getIntent().getStringExtra("teachName"));
 
         String sts = getStatusExtra();
-        if(!sts.equals("Pending"))
-        {
-            btn_accept.setVisibility(View.GONE);
-            btn_decline.setVisibility(View.GONE);
-        }
+//        if(!sts.equals("Pending"))
+//        {
+//            btn_accept.setVisibility(View.GONE);
+//            btn_decline.setVisibility(View.GONE);
+//        }
 
         if(sts.equals("Accepted"))
         {
@@ -87,10 +84,7 @@ public class CheckAppointmentActivity extends AppCompatActivity
         {
             tv_status.setTextColor(Color.BLACK);
         }
-
-
-
-
+        
         tv_subject.setText(getIntent().getStringExtra("subject"));
         tv_status.setText(sts);
 
@@ -110,11 +104,13 @@ public class CheckAppointmentActivity extends AppCompatActivity
     private void setListeners()
     {
         dbHelper = new DBHelper(this);
+        studList = new TeacherStudentListFragment();
 
         btn_accept.setOnClickListener(accept -> {
             dbHelper.updateAptStatus("Accepted", getAptItemId());
             adapter.updateAdapter(getItemPosition());
             finish();
+
         });
 
         btn_decline.setOnClickListener(decline -> {
@@ -132,12 +128,10 @@ public class CheckAppointmentActivity extends AppCompatActivity
         return getIntent().getStringExtra("status");
     }
 
-
     private String getAptItemId()
     {
         return getIntent().getStringExtra("aptId");
     }
-
 
     private String getTeachIdExtra()
     {
