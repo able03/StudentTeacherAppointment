@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +32,9 @@ public class TeacherSubjectsFragment extends Fragment
     private TextView tv_fname, tv_id;
     private DBHelper dbHelper;
     private RecyclerView rv_subjects;
+    private ArrayList<TeacherSubjectModel> teachers;
+    private TeacherSubjectsAdapter adapter;
+    private SearchView sv_subject;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +51,7 @@ public class TeacherSubjectsFragment extends Fragment
         initValues();
         setHero();
         populateRV();
+        setSearchViewListener();
 
     }
 
@@ -58,6 +63,8 @@ public class TeacherSubjectsFragment extends Fragment
         tv_id = getView().findViewById(R.id.tvIdTeacherMA);
 
         rv_subjects = getView().findViewById(R.id.rvSubjectsTeacher);
+
+        sv_subject = getView().findViewById(R.id.svMyAppointmentTeacher);
     }
 
     private void setHero()
@@ -87,8 +94,8 @@ public class TeacherSubjectsFragment extends Fragment
     private void populateRV()
     {
         dbHelper = new DBHelper(getContext());
-        ArrayList<TeacherSubjectModel> teachers = new ArrayList<>();
-        TeacherSubjectsAdapter adapter = new TeacherSubjectsAdapter(getContext(), getActivity());
+        teachers = new ArrayList<>();
+        adapter = new TeacherSubjectsAdapter(getContext(), getActivity());
 
         Cursor subjC = dbHelper.readAllSubjectData();
         while (subjC.moveToNext())
@@ -123,6 +130,46 @@ public class TeacherSubjectsFragment extends Fragment
     private String getIdExtra()
     {
         return getActivity().getIntent().getStringExtra("_id");
+    }
+
+    private void setSearchViewListener()
+    {
+        sv_subject.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                filteredList(newText);
+                return true;
+            }
+        });
+    }
+
+    private void filteredList(String newText)
+    {
+        ArrayList<TeacherSubjectModel> filteredList = new ArrayList<>();
+        for(TeacherSubjectModel teacher : teachers)
+        {
+            if(teacher.getTeacherName().toLowerCase().contains(newText.toLowerCase())
+                    || teacher.getSubject().toLowerCase().contains(newText.toLowerCase()))
+            {
+                filteredList.add(teacher);
+            }
+        }
+        if(filteredList.isEmpty())
+        {
+
+        }
+        else
+        {
+            adapter.setFilteredTeachers(filteredList);
+        }
     }
 
 

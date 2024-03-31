@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.studentteacherappointment.DBHelper;
 import com.example.studentteacherappointment.R;
+import com.example.studentteacherappointment.adapters.StudentAppointmentAdapter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -23,6 +24,7 @@ public class CheckAppointmentActivity extends AppCompatActivity
     private TextView tv_subject, tv_status;
     private MaterialButton btn_accept, btn_decline;
     private DBHelper dbHelper;
+    private StudentAppointmentAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -52,6 +54,8 @@ public class CheckAppointmentActivity extends AppCompatActivity
 
         btn_accept = findViewById(R.id.btnAcceptCheck);
         btn_decline = findViewById(R.id.btnDeclineCheck);
+
+        adapter = new StudentAppointmentAdapter(this, this);
     }
 
     private void setData()
@@ -83,11 +87,13 @@ public class CheckAppointmentActivity extends AppCompatActivity
 
         btn_accept.setOnClickListener(accept -> {
             dbHelper.updateAptStatus("Accepted", getAptItemId());
+            adapter.updateAdapter(getItemPosition());
             finish();
         });
 
         btn_decline.setOnClickListener(decline -> {
             dbHelper.updateAptStatus("Declined", getAptItemId());
+            adapter.updateAdapter(getItemPosition());
             finish();
         });
 
@@ -104,6 +110,11 @@ public class CheckAppointmentActivity extends AppCompatActivity
     private String getTeachIdExtra()
     {
         return getIntent().getStringExtra("teachId");
+    }
+
+    private int getItemPosition()
+    {
+        return getIntent().getIntExtra("itemPos", 0);
     }
 
 

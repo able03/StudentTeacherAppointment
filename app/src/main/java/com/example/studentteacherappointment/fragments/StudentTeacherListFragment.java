@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.studentteacherappointment.DBHelper;
 import com.example.studentteacherappointment.R;
 import com.example.studentteacherappointment.adapters.TeacherSubjectsAdapter;
+import com.example.studentteacherappointment.models.StudentAdapterModel;
 import com.example.studentteacherappointment.models.TeacherSubjectModel;
 
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class StudentTeacherListFragment extends Fragment
     private DBHelper dbHelper;
     private SearchView sv_teacher_list;
     private RecyclerView rv_teacher_list;
+    private ArrayList<TeacherSubjectModel> teachers;
+    private TeacherSubjectsAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +45,7 @@ public class StudentTeacherListFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         initValues();
         populateRV();
+        setSearchViewListener();
     }
 
     private void initValues()
@@ -56,8 +60,8 @@ public class StudentTeacherListFragment extends Fragment
     private void populateRV()
     {
         dbHelper = new DBHelper(getContext());
-        ArrayList<TeacherSubjectModel> teachers = new ArrayList<>();
-        TeacherSubjectsAdapter adapter = new TeacherSubjectsAdapter(getContext(), getActivity());
+        teachers = new ArrayList<>();
+        adapter = new TeacherSubjectsAdapter(getContext(), getActivity());
 
         Cursor subjC = dbHelper.readAllSubjectData();
         while (subjC.moveToNext())
@@ -83,6 +87,46 @@ public class StudentTeacherListFragment extends Fragment
             rv_teacher_list.setAdapter(adapter);
             rv_teacher_list.setLayoutManager(new LinearLayoutManager(getContext()));
             dbHelper.close();
+        }
+    }
+
+    private void setSearchViewListener()
+    {
+        sv_teacher_list.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                filteredList(newText);
+                return true;
+            }
+        });
+    }
+
+    private void filteredList(String newText)
+    {
+        ArrayList<TeacherSubjectModel> filteredList = new ArrayList<>();
+        for(TeacherSubjectModel teacher : teachers)
+        {
+            if(teacher.getTeacherName().toLowerCase().contains(newText.toLowerCase())
+                    || teacher.getSubject().toLowerCase().contains(newText.toLowerCase()))
+            {
+                filteredList.add(teacher);
+            }
+        }
+        if(filteredList.isEmpty())
+        {
+
+        }
+        else
+        {
+            adapter.setFilteredTeachers(filteredList);
         }
     }
 

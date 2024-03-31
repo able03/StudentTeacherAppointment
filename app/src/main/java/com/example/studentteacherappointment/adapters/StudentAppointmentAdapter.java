@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,11 +42,13 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
     public void setStudents(ArrayList<StudentAdapterModel> students)
     {
         this.students = students;
+        notifyDataSetChanged();
     }
 
     public void setFilteredStudents(ArrayList<StudentAdapterModel> students)
     {
         this.students = students;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -80,6 +83,19 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
         holder.tv_id.setText(id);
         holder.tv_subject.setText(subject);
 
+        if(status.equals("Accepted"))
+        {
+            holder.tv_status.setTextColor(Color.GREEN);
+        }
+        else if(status.equals("Declined"))
+        {
+            holder.tv_status.setTextColor(Color.RED);
+        }
+        else if(status.equals("Pending"))
+        {
+            holder.tv_status.setTextColor(Color.BLACK);
+        }
+
         String gender = checkGender(id);
         if(gender.equalsIgnoreCase("Female"))
         {
@@ -98,6 +114,7 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
             holder.cv_student.setOnClickListener(cvStud -> {
                 Intent intent = new Intent(context, CheckAppointmentActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putInt("itemPos", position);
                 bundle.putString("aptId", aptId);
                 bundle.putString("id", id);
                 bundle.putString("teachName", teachName);
@@ -159,4 +176,10 @@ public class StudentAppointmentAdapter extends RecyclerView.Adapter<StudentAppoi
         cursor.close();
         return gender;
     }
+
+    public void updateAdapter(int position)
+    {
+        notifyDataSetChanged();
+    }
+
 }

@@ -35,6 +35,7 @@ public class StudentMyAppointmentFragment extends Fragment
     private RecyclerView rv_appointments;
     private DBHelper dbHelper;
     private ArrayList<StudentAdapterModel> students;
+    private StudentAppointmentAdapter studentAppointmentAdapter;
 
 
     @Override
@@ -52,6 +53,7 @@ public class StudentMyAppointmentFragment extends Fragment
         setHero();
         setRVData();
         populateRV();
+        setSearchViewListener();
 
     }
 
@@ -123,12 +125,53 @@ public class StudentMyAppointmentFragment extends Fragment
         }
     }
 
+    private void setSearchViewListener()
+    {
+        sv_appointments.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                filteredList(newText);
+                return true;
+            }
+        });
+    }
+
+    private void filteredList(String newText)
+    {
+        ArrayList<StudentAdapterModel> filteredList = new ArrayList<>();
+        for(StudentAdapterModel student : students)
+        {
+            if(student.getStudentName().toLowerCase().contains(newText.toLowerCase())
+                    || student.getSubject().toLowerCase().contains(newText.toLowerCase())
+                    || student.getStatus().toLowerCase().contains(newText.toLowerCase()))
+            {
+                filteredList.add(student);
+            }
+        }
+        if(filteredList.isEmpty())
+        {
+
+        }
+        else
+        {
+            studentAppointmentAdapter.setFilteredStudents(filteredList);
+        }
+    }
+
 
 
 
     private void populateRV()
     {
-        StudentAppointmentAdapter studentAppointmentAdapter = new StudentAppointmentAdapter(getContext(), getActivity());
+        studentAppointmentAdapter = new StudentAppointmentAdapter(getContext(), getActivity());
         studentAppointmentAdapter.setStudents(students);
         rv_appointments.setAdapter(studentAppointmentAdapter);
         rv_appointments.setLayoutManager(new LinearLayoutManager(getContext()));

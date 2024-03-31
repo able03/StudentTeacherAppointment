@@ -1,5 +1,6 @@
 package com.example.studentteacherappointment.fragments;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -20,6 +21,7 @@ import com.example.studentteacherappointment.R;
 import com.example.studentteacherappointment.adapters.StudentAppointmentAdapter;
 import com.example.studentteacherappointment.models.StudentAdapterModel;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class TeacherStudentListFragment extends Fragment
         initValues();
         setRVData();
         populateRV();
+        setSearchViewListener();
     }
 
     private void initValues()
@@ -90,10 +93,52 @@ public class TeacherStudentListFragment extends Fragment
 
     }
 
+    private void setSearchViewListener()
+    {
+        sv_student.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                filteredList(newText);
+                return true;
+            }
+        });
+    }
+
+    private void filteredList(String newText)
+    {
+        ArrayList<StudentAdapterModel> filteredList = new ArrayList<>();
+        for(StudentAdapterModel student : students)
+        {
+            if(student.getStudentName().toLowerCase().contains(newText.toLowerCase())
+                    || student.getSubject().toLowerCase().contains(newText.toLowerCase())
+                    || student.getStatus().toLowerCase().contains(newText.toLowerCase()))
+            {
+                filteredList.add(student);
+            }
+        }
+        if(filteredList.isEmpty())
+        {
+
+        }
+        else
+        {
+            studentAppointmentAdapter.setFilteredStudents(filteredList);
+        }
+    }
+
+
+
 
     private void populateRV()
     {
-
         studentAppointmentAdapter = new StudentAppointmentAdapter(getContext(), getActivity());
         studentAppointmentAdapter.setStudents(students);
         rv_student.setAdapter(studentAppointmentAdapter);
@@ -116,6 +161,8 @@ public class TeacherStudentListFragment extends Fragment
     {
         return getActivity().getIntent().getStringExtra("_id");
     }
+
+
 
 
 }

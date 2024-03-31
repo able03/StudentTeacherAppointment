@@ -46,4 +46,10 @@ public class TeacherSubjectModel
     {
         this.subject = subject;
     }
+
+    public String getTeacherName()
+    {
+        return fname + " " + mname + " " + lname;
+    }
+
 }

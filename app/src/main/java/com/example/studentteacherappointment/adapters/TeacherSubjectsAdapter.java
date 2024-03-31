@@ -38,11 +38,13 @@ public class TeacherSubjectsAdapter extends RecyclerView.Adapter<TeacherSubjects
     public void setTeachers(ArrayList<TeacherSubjectModel> teachers)
     {
         this.teachers = teachers;
+        notifyDataSetChanged();
     }
 
     public void setFilteredTeachers(ArrayList<TeacherSubjectModel> teachers)
     {
         this.teachers = teachers;
+        notifyDataSetChanged();
     }
 
     @NonNull
