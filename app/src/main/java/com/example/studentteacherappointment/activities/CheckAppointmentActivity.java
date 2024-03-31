@@ -2,8 +2,11 @@ package com.example.studentteacherappointment.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,8 +68,31 @@ public class CheckAppointmentActivity extends AppCompatActivity
         et_id_student.setText(getIntent().getStringExtra("id"));
         et_name_teacher.setText(getIntent().getStringExtra("teachName"));
 
+        String sts = getStatusExtra();
+        if(!sts.equals("Pending"))
+        {
+            btn_accept.setVisibility(View.GONE);
+            btn_decline.setVisibility(View.GONE);
+        }
+
+        if(sts.equals("Accepted"))
+        {
+            tv_status.setTextColor(Color.GREEN);
+        }
+        else if(sts.equals("Declined"))
+        {
+            tv_status.setTextColor(Color.RED);
+        }
+        else if(sts.equals("Pending"))
+        {
+            tv_status.setTextColor(Color.BLACK);
+        }
+
+
+
+
         tv_subject.setText(getIntent().getStringExtra("subject"));
-        tv_status.setText(getIntent().getStringExtra("status"));
+        tv_status.setText(sts);
 
         dbHelper = new DBHelper(this);
         Cursor cursor = dbHelper.readAllAppointmentData();
@@ -100,6 +126,12 @@ public class CheckAppointmentActivity extends AppCompatActivity
         dbHelper.close();
 
     }
+
+    private String getStatusExtra()
+    {
+        return getIntent().getStringExtra("status");
+    }
+
 
     private String getAptItemId()
     {
